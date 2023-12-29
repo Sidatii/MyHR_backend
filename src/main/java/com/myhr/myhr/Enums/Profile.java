@@ -1,0 +1,21 @@
+package com.myhr.myhr.Enums;
+
+public enum Profile {
+    FULLSTACK_DEVELOPER,
+    FRONTEND_DEVELOPER,
+    BACKEND_DEVELOPER,
+    MOBILE_DEVELOPER,
+    DEVOPS,
+    DATA_SCIENCE,
+    MACHINE_LEARNING,
+    QA,
+    PROJECT_MANAGER,
+    PRODUCT_MANAGER,
+    DESIGNER,
+    ACCOUNTANT,
+    HR,
+    MARKETING,
+    SALES,
+    CUSTOMER_SUPPORT,
+    OTHER
+}

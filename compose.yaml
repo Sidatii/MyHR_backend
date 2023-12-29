@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=myhr'
+      - 'POSTGRES_PASSWORD=Akka1998nh'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5433:5433'
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
