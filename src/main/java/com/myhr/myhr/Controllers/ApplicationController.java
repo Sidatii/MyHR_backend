@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/application")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final ModelMapper modelMapper;

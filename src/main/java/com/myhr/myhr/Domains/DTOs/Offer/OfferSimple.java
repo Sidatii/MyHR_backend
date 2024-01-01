@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class OfferSimple {
     private Long id;
+    private String name;
     private String title;
     private String description;
     private String city;

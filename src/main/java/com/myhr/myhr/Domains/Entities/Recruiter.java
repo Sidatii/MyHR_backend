@@ -26,6 +26,8 @@ public class Recruiter {
             strategy = GenerationType.SEQUENCE
     )
     private Long id;
+    @Column(name = "name", columnDefinition = "TEXT")
+    private String name;
     @Column(name = "email", nullable = false, unique = true, columnDefinition = "TEXT")
     private String email;
     @Column(name = "password")

@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class RecruiterRequest {
+    private String name;
     private String email;
     private String password;
     private String address;
