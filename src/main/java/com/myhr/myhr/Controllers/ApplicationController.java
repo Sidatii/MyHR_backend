@@ -8,6 +8,7 @@ import com.myhr.myhr.Services.FileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/application")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final ModelMapper modelMapper;
@@ -38,15 +39,20 @@ public class ApplicationController {
 
     @PostMapping("/create")
     public ApplicationResponse create(@ModelAttribute ApplicationRequest applicationRequest) {
+        System.out.println(applicationRequest);
         List<FileRequest> files = new ArrayList<>();
-        applicationRequest.getFileList().forEach(file -> {
-            FileRequest fileRequest = new FileRequest(file);
-            fileRequest.setUrl(fileService.uploadFile(file));
-            files.add(fileRequest);
-        });
+        if (applicationRequest.getFileList() != null) {
+            applicationRequest.getFileList().forEach(file -> {
+                FileRequest fileRequest = new FileRequest(file);
+                fileRequest.setUrl(fileService.uploadFile(file));
+                files.add(fileRequest);
+            });
+        }
         ApplicationResponse applicationResponse = applicationService.create(applicationRequest);
+        System.out.println(applicationResponse);
         files.forEach(file -> {
             file.setApplicationId(applicationResponse.getId());
+            System.out.println(file);
             fileService.create(file);
         });
         return applicationResponse;
