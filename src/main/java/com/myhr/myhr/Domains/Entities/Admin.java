@@ -1,27 +1,27 @@
 package com.myhr.myhr.Domains.Entities;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Entity(name = "Recruiter")
-public class Recruiter extends User{
+@Entity(name = "admin")
+public class Admin extends User{
 
+    @Column(name = "position", nullable = false, columnDefinition = "TEXT")
+    private String position;
     @Column(name = "address")
     private String address;
     @Column(name = "phone")
     private String phone;
-    @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ToString.Exclude
-    private List<Offer> offers;
 
     @Override
     public final boolean equals(Object o) {
@@ -30,8 +30,8 @@ public class Recruiter extends User{
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Recruiter recruiter = (Recruiter) o;
-        return getPhone() != null && Objects.equals(getPhone(), recruiter.getPhone());
+        Admin admin = (Admin) o;
+        return getPhone() != null && Objects.equals(getPhone(), admin.getPhone());
     }
 
     @Override

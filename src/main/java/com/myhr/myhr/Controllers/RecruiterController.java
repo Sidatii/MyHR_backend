@@ -6,6 +6,7 @@ import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Services.EmailServiceImpl;
 import com.myhr.myhr.Services.ImageService;
 import com.myhr.myhr.Services.RecruiterService;
+import com.myhr.myhr.Services.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -25,13 +26,15 @@ public class RecruiterController {
     private final ModelMapper modelMapper;
     private final ImageService imageService;
     private final EmailServiceImpl emailService;
+    private final UserService userService;
     private final HttpSession session;
 
-    public RecruiterController(RecruiterService recruiterService, ImageService imageService, ModelMapper modelMapper, EmailServiceImpl emailService, HttpSession session) {
+    public RecruiterController(RecruiterService recruiterService, ImageService imageService, ModelMapper modelMapper, EmailServiceImpl emailService, UserService userService, HttpSession session) {
         this.recruiterService = recruiterService;
         this.imageService = imageService;
         this.modelMapper = modelMapper;
         this.emailService = emailService;
+        this.userService = userService;
         this.session = session;
     }
 
@@ -60,7 +63,7 @@ public class RecruiterController {
             imageRequest.setRecruiterId(recruiterResponse.getId());
             imageService.create(imageRequest);
         });
-        int code = recruiterService.generateVerificationCode();
+        int code = userService.generateVerificationCode();
         this.session.setAttribute(recruiterResponse.getEmail(), code);
         // Send verification code
         emailService.send(recruiterResponse.getEmail(), "Account activation", "Hello, you can use this code to activate your account: " + code);

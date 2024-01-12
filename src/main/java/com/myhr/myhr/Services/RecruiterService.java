@@ -70,10 +70,6 @@ public class RecruiterService implements ServiceSpecification<RecruiterResponse,
         return new RecruiterResponse();
     }
 
-    public int generateVerificationCode() {
-        return (int) (Math.random() * 1000000);
-    }
-
     public RecruiterResponse verify(int code, String email, HttpSession session) {
         Recruiter recruiter = recruiterRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Recruiter not found with email " + email));
         if (code == (int) session.getAttribute(email) ) {

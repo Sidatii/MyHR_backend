@@ -39,6 +39,9 @@ public class Application {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "offer_id", referencedColumnName = "id")
     private Offer offer;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "candidate", referencedColumnName = "id")
+    private Candidate candidate;
 
     @Override
     public final boolean equals(Object o) {

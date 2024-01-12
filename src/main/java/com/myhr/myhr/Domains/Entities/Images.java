@@ -31,9 +31,9 @@ public class Images {
     @Column(name = "url", columnDefinition = "TEXT")
     private String url;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruiter_id", referencedColumnName = "id")
     @ToString.Exclude
-    private Recruiter recruiter;
+    private User user;
+
 
     @Override
     public final boolean equals(Object o) {

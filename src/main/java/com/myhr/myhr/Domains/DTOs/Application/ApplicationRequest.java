@@ -1,6 +1,7 @@
 package com.myhr.myhr.Domains.DTOs.Application;
 
 import com.myhr.myhr.Domains.DTOs.File.FileRequest;
+import com.myhr.myhr.Domains.Entities.Candidate;
 import com.myhr.myhr.Enums.Assessment;
 import lombok.Data;
 import org.springframework.web.bind.annotation.Mapping;
@@ -14,4 +15,5 @@ public class ApplicationRequest {
     private String email;
     private Long offer;
     private List<MultipartFile> fileList;
+    private Long candidate;
 }
