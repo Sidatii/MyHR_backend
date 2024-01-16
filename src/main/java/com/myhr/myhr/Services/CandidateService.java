@@ -1,38 +1,54 @@
 package com.myhr.myhr.Services;
 
+import com.myhr.myhr.Auth.AuthenticationResponse;
+import com.myhr.myhr.Config.JwtService;
 import com.myhr.myhr.Config.ServiceSpecification;
+import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRegister;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRequest;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateResponse;
+import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Domains.Entities.Candidate;
 import com.myhr.myhr.Domains.Entities.Recruiter;
+import com.myhr.myhr.Domains.Entities.User;
+import com.myhr.myhr.Enums.Role;
 import com.myhr.myhr.Repositories.CandidateRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
+@RequiredArgsConstructor
 public class CandidateService implements ServiceSpecification<CandidateResponse, CandidateRequest, Long> {
 
     private final CandidateRepository candidateRepository;
     private final ImageService imageService;
     private final EmailServiceImpl emailService;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public CandidateService(CandidateRepository candidateRepository, ImageService imageService, EmailServiceImpl emailService, ModelMapper modelMapper) {
-        this.candidateRepository = candidateRepository;
-        this.imageService = imageService;
-        this.emailService = emailService;
-        this.modelMapper = modelMapper;
-    }
 
     @Override
     public CandidateResponse get(Long id) {
         return null;
+    }
+
+    public AuthenticationResponse register(CandidateRegister request) {
+        Candidate candidate = modelMapper.map(request, Candidate.class);
+        candidate.setPassword(passwordEncoder.encode(request.getPassword()));
+        candidate.setRole(Role.ROLE_CANDIDATE);
+        candidateRepository.save(candidate);
+        String JwtToken = jwtService.generateToken(modelMapper.map(candidate, User.class));
+        return AuthenticationResponse.builder()
+                .token(JwtToken)
+                .build();
     }
 
     @Override

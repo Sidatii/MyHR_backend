@@ -1,16 +1,24 @@
 package com.myhr.myhr.Controllers;
 
+import com.myhr.myhr.Auth.AuthenticationResponse;
 import com.myhr.myhr.Config.EmailService;
+import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRegister;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRequest;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateResponse;
 import com.myhr.myhr.Domains.DTOs.Image.ImageRequest;
+import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
+import com.myhr.myhr.Domains.Entities.Candidate;
+import com.myhr.myhr.Domains.Entities.Recruiter;
+import com.myhr.myhr.Domains.Entities.User;
+import com.myhr.myhr.Enums.Role;
 import com.myhr.myhr.Services.CandidateService;
 import com.myhr.myhr.Services.EmailServiceImpl;
 import com.myhr.myhr.Services.ImageService;
 import com.myhr.myhr.Services.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -30,7 +38,9 @@ public class CandidateController {
 
 
 
-    @PostMapping("/register")
+
+
+    @PostMapping("/create")
     public CandidateResponse register(@RequestAttribute CandidateRequest candidateRequest, HttpSession session) {
 
         List<ImageRequest> images = new ArrayList<>();

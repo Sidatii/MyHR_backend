@@ -8,16 +8,16 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "agent")
+@Entity(name = "candidate")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 public class Candidate extends User{
 
-    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "first_name", nullable = true ,columnDefinition = "TEXT")
     private String firstName;
-    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "last_name", nullable = true, columnDefinition = "TEXT")
     private String lastName;
     @Column(name = "address")
     private String address;

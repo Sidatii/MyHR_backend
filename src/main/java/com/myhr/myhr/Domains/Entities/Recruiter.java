@@ -15,6 +15,8 @@ import java.util.Objects;
 @Entity(name = "Recruiter")
 public class Recruiter extends User{
 
+    @Column(name = "name")
+    private String name;
     @Column(name = "address")
     private String address;
     @Column(name = "phone")

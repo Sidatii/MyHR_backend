@@ -1,6 +1,9 @@
 package com.myhr.myhr.Controllers;
 
+import com.myhr.myhr.Auth.AuthenticationResponse;
+import com.myhr.myhr.Auth.RegisterRequest;
 import com.myhr.myhr.Domains.DTOs.Image.ImageRequest;
+import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRequest;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Services.EmailServiceImpl;
@@ -19,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/recruiter")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 public class RecruiterController {
 
     private final RecruiterService recruiterService;
@@ -48,6 +51,11 @@ public class RecruiterController {
         session.setAttribute("sessionId", session.getId());
         session.setAttribute("email", "cdscsdcsd@cqscs.com");
         return recruiterService.getAll(pageable);
+    }
+
+    @PostMapping("/register")
+    public AuthenticationResponse register(@RequestBody RecruiterRegister request){
+        return recruiterService.register(request);
     }
 
     @PostMapping("/create")

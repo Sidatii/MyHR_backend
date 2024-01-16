@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity(name = "admin")
 public class Admin extends User{
 
-    @Column(name = "position", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "position", nullable = true, columnDefinition = "TEXT")
     private String position;
     @Column(name = "address")
     private String address;

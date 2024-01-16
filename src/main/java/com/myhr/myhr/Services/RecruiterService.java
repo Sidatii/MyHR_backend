@@ -1,30 +1,35 @@
 package com.myhr.myhr.Services;
 
-//import com.myhr.myhr.Config.LocalSession;
+import com.myhr.myhr.Auth.AuthenticationResponse;
+import com.myhr.myhr.Auth.RegisterRequest;
+import com.myhr.myhr.Config.JwtService;
 import com.myhr.myhr.Config.ServiceSpecification;
+import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRequest;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Domains.Entities.Recruiter;
+import com.myhr.myhr.Domains.Entities.User;
+import com.myhr.myhr.Enums.Role;
 import com.myhr.myhr.Repositories.RecruiterRepository;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
+@RequiredArgsConstructor
 public class RecruiterService implements ServiceSpecification<RecruiterResponse, RecruiterRequest, Long>{
     private final RecruiterRepository recruiterRepository;
     private final ModelMapper modelMapper;
     private final EmailServiceImpl emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 //    private final Session session;
 
-    public RecruiterService(RecruiterRepository recruiterRepository, ModelMapper modelMapper, EmailServiceImpl emailService) {
-        this.recruiterRepository = recruiterRepository;
-        this.modelMapper = modelMapper;
-        this.emailService = emailService;
-    }
 
     @Override
     public RecruiterResponse get(Long id) {
@@ -86,5 +91,16 @@ public class RecruiterService implements ServiceSpecification<RecruiterResponse,
             throw new RuntimeException("Account already verified");
         }
         emailService.send(recruiter.getEmail(), "Account activation", "Hello, you can use this code to activate your account: " + session.getAttribute("code"));
+    }
+
+    public AuthenticationResponse register(RecruiterRegister request) {
+        Recruiter recruiter = modelMapper.map(request, Recruiter.class);
+        recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
+        recruiter.setRole(Role.ROLE_RECRUITER);
+        recruiterRepository.save(recruiter);
+        String JwtToken = jwtService.generateToken(modelMapper.map(recruiter, User.class));
+        return AuthenticationResponse.builder()
+                .token(JwtToken)
+                .build();
     }
 }
