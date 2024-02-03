@@ -1,16 +1,16 @@
 package com.myhr.myhr.Services;
 
 import com.myhr.myhr.Auth.AuthenticationResponse;
-import com.myhr.myhr.Auth.RegisterRequest;
 import com.myhr.myhr.Config.JwtService;
 import com.myhr.myhr.Config.ServiceSpecification;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRequest;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Domains.Entities.Recruiter;
+import com.myhr.myhr.Domains.Entities.Role;
 import com.myhr.myhr.Domains.Entities.User;
-import com.myhr.myhr.Enums.Role;
 import com.myhr.myhr.Repositories.RecruiterRepository;
+import com.myhr.myhr.Repositories.RoleRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class RecruiterService implements ServiceSpecification<RecruiterResponse,
     private final EmailServiceImpl emailService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RoleRepository roleRepository;
 //    private final Session session;
 
 
@@ -96,7 +98,8 @@ public class RecruiterService implements ServiceSpecification<RecruiterResponse,
     public AuthenticationResponse register(RecruiterRegister request) {
         Recruiter recruiter = modelMapper.map(request, Recruiter.class);
         recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
-        recruiter.setRole(Role.ROLE_RECRUITER);
+        Role role = roleRepository.findByName(String.valueOf(com.myhr.myhr.Enums.Role.ROLE_RECRUITER)).orElseThrow(() -> new RuntimeException("role not found"));
+        recruiter.setRoles(List.of(role));
         recruiterRepository.save(recruiter);
         String JwtToken = jwtService.generateToken(modelMapper.map(recruiter, User.class));
         return AuthenticationResponse.builder()

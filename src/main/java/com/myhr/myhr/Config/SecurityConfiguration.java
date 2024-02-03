@@ -1,6 +1,6 @@
 package com.myhr.myhr.Config;
 
-import jakarta.servlet.Filter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,9 @@ public class SecurityConfiguration {
         http.cors(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests((requests) -> {
             (requests
-                    .requestMatchers("/auth/**"))
+                    .requestMatchers("/auth/**",
+                            "/api/v1/offer/**",
+                            "/swagger-ui/**"))
                     .permitAll()
                     .anyRequest()
                     .authenticated();

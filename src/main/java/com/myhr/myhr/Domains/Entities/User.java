@@ -1,12 +1,12 @@
 package com.myhr.myhr.Domains.Entities;
 
-import com.myhr.myhr.Enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -35,8 +35,15 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ManyToMany(
+            fetch = FetchType.EAGER
+    )
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<>();
     @Column(name = "active", columnDefinition = "BOOLEAN default false")
     private boolean active;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -48,7 +55,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority(roles.toString()));
     }
 
     @Override

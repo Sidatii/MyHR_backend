@@ -7,6 +7,7 @@ import com.myhr.myhr.Services.OfferService;
 import org.modelmapper.internal.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,10 +1,10 @@
 package com.myhr.myhr.Domains.DTOs.Candidate;
 
+import com.myhr.myhr.Domains.Entities.Role;
 import com.myhr.myhr.Enums.Level;
-import com.myhr.myhr.Enums.Role;
 import lombok.Value;
 
-import java.io.Serializable;
+import java.util.List;
 
 /**
  * DTO for {@link com.myhr.myhr.Domains.Entities.Candidate}
@@ -14,7 +14,7 @@ public class CandidateSimple {
     Long id;
     String email;
     String password;
-    Role role;
+    List<Role> role;
     boolean active;
     String firstName;
     String lastName;

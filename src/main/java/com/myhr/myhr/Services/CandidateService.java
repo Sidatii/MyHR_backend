@@ -6,13 +6,13 @@ import com.myhr.myhr.Config.ServiceSpecification;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRegister;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateRequest;
 import com.myhr.myhr.Domains.DTOs.Candidate.CandidateResponse;
-import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterRegister;
 import com.myhr.myhr.Domains.DTOs.Recruiter.RecruiterResponse;
 import com.myhr.myhr.Domains.Entities.Candidate;
 import com.myhr.myhr.Domains.Entities.Recruiter;
 import com.myhr.myhr.Domains.Entities.User;
 import com.myhr.myhr.Enums.Role;
 import com.myhr.myhr.Repositories.CandidateRepository;
+import com.myhr.myhr.Repositories.RoleRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class CandidateService implements ServiceSpecification<CandidateResponse,
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private RoleRepository roleRepository;
 
 
     @Override
@@ -43,7 +45,8 @@ public class CandidateService implements ServiceSpecification<CandidateResponse,
     public AuthenticationResponse register(CandidateRegister request) {
         Candidate candidate = modelMapper.map(request, Candidate.class);
         candidate.setPassword(passwordEncoder.encode(request.getPassword()));
-        candidate.setRole(Role.ROLE_CANDIDATE);
+        com.myhr.myhr.Domains.Entities.Role role = roleRepository.findByName(String.valueOf(Role.ROLE_CANDIDATE)).orElseThrow(() -> new RuntimeException("role not found"));
+        candidate.setRoles(List.of(role));
         candidateRepository.save(candidate);
         String JwtToken = jwtService.generateToken(modelMapper.map(candidate, User.class));
         return AuthenticationResponse.builder()
