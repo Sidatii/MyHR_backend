@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -99,7 +100,7 @@ public class RecruiterService implements ServiceSpecification<RecruiterResponse,
         Recruiter recruiter = modelMapper.map(request, Recruiter.class);
         recruiter.setPassword(passwordEncoder.encode(request.getPassword()));
         Role role = roleRepository.findByName(String.valueOf(com.myhr.myhr.Enums.Role.ROLE_RECRUITER)).orElseThrow(() -> new RuntimeException("role not found"));
-        recruiter.setRoles(List.of(role));
+        recruiter.setRoles(Set.of(role));
         recruiterRepository.save(recruiter);
         String JwtToken = jwtService.generateToken(modelMapper.map(recruiter, User.class));
         return AuthenticationResponse.builder()

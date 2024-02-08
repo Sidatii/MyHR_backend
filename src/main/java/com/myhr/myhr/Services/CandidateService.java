@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +47,7 @@ public class CandidateService implements ServiceSpecification<CandidateResponse,
         Candidate candidate = modelMapper.map(request, Candidate.class);
         candidate.setPassword(passwordEncoder.encode(request.getPassword()));
         com.myhr.myhr.Domains.Entities.Role role = roleRepository.findByName(String.valueOf(Role.ROLE_CANDIDATE)).orElseThrow(() -> new RuntimeException("role not found"));
-        candidate.setRoles(List.of(role));
+        candidate.setRoles(Set.of(role));
         candidateRepository.save(candidate);
         String JwtToken = jwtService.generateToken(modelMapper.map(candidate, User.class));
         return AuthenticationResponse.builder()
