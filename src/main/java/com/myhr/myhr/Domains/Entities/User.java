@@ -24,10 +24,7 @@ public class User implements UserDetails {
             sequenceName = "user_sequence",
             allocationSize = 1
     )
-    @jakarta.persistence.GeneratedValue(
-            generator = "user_sequence",
-            strategy = jakarta.persistence.GenerationType.SEQUENCE
-    )
+    @jakarta.persistence.GeneratedValue(generator = "user_sequence",strategy = jakarta.persistence.GenerationType.SEQUENCE)
     private Long id;
     @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
     private String email;

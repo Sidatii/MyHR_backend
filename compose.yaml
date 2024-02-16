@@ -7,7 +7,7 @@ services:
       - 'POSTGRES_PASSWORD=Akka1998nh'
       - 'POSTGRES_USER=postgres'
     ports:
-      - '5433:5433'
+      - '5434:5433'
   redis:
     image: "redis:alpine"
     ports:
