@@ -5,6 +5,7 @@ import com.myhr.myhr.Domains.DTOs.Application.ApplicationResponse;
 import com.myhr.myhr.Domains.DTOs.File.FileRequest;
 import com.myhr.myhr.Services.ApplicationService;
 import com.myhr.myhr.Services.FileService;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +19,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/application")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ApplicationController {
     private final ApplicationService applicationService;
     private final ModelMapper modelMapper;
     private final FileService fileService;
 
-    public ApplicationController(ApplicationService applicationService, ModelMapper modelMapper, FileService fileService) {
-        this.applicationService = applicationService;
-        this.modelMapper = modelMapper;
-        this.fileService = fileService;
-    }
 
     @GetMapping("/{id}")
     public ApplicationResponse getById(@PathVariable Long id) {
@@ -50,7 +47,6 @@ public class ApplicationController {
             });
         }
         ApplicationResponse applicationResponse = applicationService.create(applicationRequest);
-        System.out.println(applicationResponse);
         files.forEach(file -> {
             file.setApplicationId(applicationResponse.getId());
             System.out.println(file);

@@ -1,0 +1,29 @@
+spring.datasource.url=jdbc:postgresql://localhost:5432/my_hr
+spring.datasource.username=postgres
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+server.port=8081
+
+#spring.docker.compose.enabled=true
+#spring.docker.compose.lifecycle-management=start_only
+#spring.docker.compose.file=compose.yaml
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=
+spring.mail.password=uyyt gnpq bnpt bell tszc
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+jwt.secret=KIJHFF665KJ/bF8h5qlKtqFd3lr9sgZ174g/nBLWE7EPKC/IyIwgV9Day3YS2wTl9gawCVHiY6J8
+
+project.title=MyHR
+contact-email=
+local-server.url=localhost:8081/swagger-ui/index.html
+prod-server.url=localhost:8081/swagger-ui/index.html
+project.version=1.0.0
+project.description=This is a job demand/offer platform
+
+
